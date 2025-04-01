@@ -39,11 +39,19 @@ def meteo():
 def mongraphique():
     return render_template("graphique.html")
 
-@app.route('/extract-minutes/<date_string>')
-def extract_minutes(date_string):
-        date_object = datetime.strptime(date_string, '%Y-%m-%dT%H:%M:%SZ')
-        minutes = date_object.minute
-        return jsonify({'minutes': minutes})
+@app.route('/api/commits')
+def get_commits():
+    url = "https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits"
+    response = requests.get(url)
+    commits = response.json()
+
+    commit_data = []
+    for commit in commits:
+        date_str = commit['commit']['author']['date']
+        date_obj = datetime.strptime(date_str, '%Y-%m-%dT%H:%M:%SZ')
+        commit_data.append({"minute": date_obj.minute, "author": commit['commit']['author']['name']})
+
+    return jsonify(commit_data)
   
 if __name__ == "__main__":
   app.run(debug=True)
