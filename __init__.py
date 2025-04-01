@@ -9,11 +9,11 @@ app = Flask(__name__)
                                                                                                                                       
 @app.route('/') 
 def hello_world():
-    return render_template('histogramme.html')
-
-@app.route('/histogramme/') 
-def hello_world():
     return render_template('hello.html')
+
+@app.route("/histogramme/") 
+def histogramme():
+    return render_template('histogramme.html')
   
 @app.route("/contact/")
 def MaPremiereAPI():
