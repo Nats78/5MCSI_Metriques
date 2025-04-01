@@ -19,6 +19,10 @@ def histogramme():
 def MaPremiereAPI():
     return render_template('creation.html')
 
+@app.route("/commits/")
+def commits():
+    return render_template('commits.html')
+
 @app.route('/tawarano/')
 def meteo():
     response = urlopen('https://samples.openweathermap.org/data/2.5/forecast?lat=0&lon=0&appid=xxx')
