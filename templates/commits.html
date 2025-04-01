@@ -3,17 +3,60 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Nombre de Commits</title>
+    <title>Liste des Commits</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            color: #333;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background: white;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 10px;
+            text-align: left;
+        }
+        th {
+            background-color: #007bff;
+            color: white;
+        }
+    </style>
 </head>
 <body>
-    <h1>Nombre de Commits</h1>
+    <h1>Liste des Commits</h1>
     <p id="commit-count">Chargement...</p>
+    <table>
+        <thead>
+            <tr>
+                <th>Auteur</th>
+                <th>Minute du commit</th>
+            </tr>
+        </thead>
+        <tbody id="commit-list">
+        </tbody>
+    </table>
     
     <script>
         fetch('http://localhost:3000/api/commits') // Adapte l'URL selon ton backend
             .then(response => response.json())
             .then(data => {
                 document.getElementById('commit-count').textContent = `Nombre de commits : ${data.length}`;
+                let tableBody = document.getElementById('commit-list');
+                data.forEach(commit => {
+                    let row = `<tr>
+                        <td>${commit.author}</td>
+                        <td>${commit.minute}</td>
+                    </tr>`;
+                    tableBody.innerHTML += row;
+                });
             })
             .catch(error => {
                 console.error('Erreur lors de la récupération des commits :', error);
