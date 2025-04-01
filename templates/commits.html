@@ -1,21 +1,11 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Statistiques des Commits</title>
+    <title>Commits par Minute</title>
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            text-align: center;
-            background-color: #f4f4f4;
-        }
-        canvas {
-            max-width: 80%;
-            margin-top: 20px;
-        }
-    </style>
 </head>
 <body>
     <h2>Nombre de Commits par Minute</h2>
@@ -25,8 +15,7 @@
         async function fetchCommits() {
             const response = await fetch("https://api.github.com/repos/OpenRSI/5MCSI_Metriques/commits");
             const commits = await response.json();
-            
-            // Extraction des minutes
+
             let commitMinutes = {};
             commits.forEach(commit => {
                 let date = new Date(commit.commit.author.date);
@@ -34,11 +23,9 @@
                 commitMinutes[minute] = (commitMinutes[minute] || 0) + 1;
             });
 
-            // Préparation des données pour le graphique
             let labels = Object.keys(commitMinutes).sort((a, b) => a - b);
             let data = labels.map(min => commitMinutes[min]);
 
-            // Affichage du graphique avec Chart.js
             new Chart(document.getElementById("commitChart"), {
                 type: "bar",
                 data: {
